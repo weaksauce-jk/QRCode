@@ -7,7 +7,7 @@ import numpy as np
 import cv2
 import time
 
-# get the webcam:  
+ 
 cap = cv2.VideoCapture(0)
 
 cap.set(3,640)
@@ -22,9 +22,9 @@ cap.set(4,480)
 time.sleep(2)
 
 def decode(im) : 
-    # Find barcodes and QR codes
+   
     decodedObjects = pyzbar.decode(im)
-    # Print results
+   
     for obj in decodedObjects:
         print('Type : ', obj.type)
         print('Data : ', obj.data,'\n')     
@@ -38,9 +38,9 @@ while True:
     
     image=np.zeros((512,512,3),dtype="uint8")
     image[:] = (255,255,255)
-    # Capture frame-by-frame
+   
     ret, frame = cap.read()
-    # Our operations on the frame come here
+    
     cv2.putText(frame,"Challengers",(10,10),cv2.FONT_HERSHEY_DUPLEX,0.5,(110,0,250))
     im = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     key = cv2.waitKey(2)
@@ -50,7 +50,7 @@ while True:
         for i in range(4):
             time.sleep(1)
             ret, frame = cap.read()
-            # Our operations on the frame come here
+           
             im = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
             im=cv2.resize(im,(530,320))
             cv2.imwrite('4.jpg', im)
@@ -70,16 +70,16 @@ while True:
             points = decodedObject.polygon
 
      
-            # If the points do not form a quad, find convex hull
+            
             if len(points) > 4 : 
                 hull = cv2.convexHull(np.array([point for point in points], dtype=np.float32))
                 hull = list(map(tuple, np.squeeze(hull)))
             else : 
                 hull = points;
          
-            # Number of points in the convex hull
+           
             n = len(hull)     
-            # Draw the convext hull
+           
             for j in range(0,n):
                 cv2.line(frame, hull[j], hull[ (j+1) % n], (255,0,0), 3)
 
@@ -103,16 +103,16 @@ while True:
     for decodedObject in decodedObjects: 
         points = decodedObject.polygon
      
-        # If the points do not form a quad, find convex hull
+        
         if len(points) > 4 : 
           hull = cv2.convexHull(np.array([point for point in points], dtype=np.float32))
           hull = list(map(tuple, np.squeeze(hull)))
         else : 
           hull = points;
          
-        # Number of points in the convex hull
+        
         n = len(hull)     
-        # Draw the convext hull
+        
         for j in range(0,n):
           cv2.line(frame, hull[j], hull[ (j+1) % n], (255,0,0), 3)
 
@@ -127,15 +127,15 @@ while True:
         barCode = str(decodedObject.data)
         cv2.putText(frame, barCode, (x, y), font, 1, (0,255,255), 2, cv2.LINE_AA)
                
-    # Display the resulting frame
+    
     cv2.imshow('frame',frame)
     
     
     if key & 0xFF == ord('q'):
         break
-    elif key & 0xFF == ord('s'): # wait for 's' key to save 
+    elif key & 0xFF == ord('s'): 
         cv2.imwrite('Capture.png', frame)     
 
-# When everything done, release the capture
+
 cap.release()
 cv2.destroyAllWindows()
